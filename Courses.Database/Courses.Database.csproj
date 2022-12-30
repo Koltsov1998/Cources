@@ -4,7 +4,15 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Cources.Database</RootNamespace>
+        <RootNamespace>Courses.Database</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Models" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
+    </ItemGroup>
 
 </Project>
