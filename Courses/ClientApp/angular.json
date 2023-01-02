@@ -132,5 +132,8 @@
       }
     }
   },
-  "defaultProject": "Cources"
+  "defaultProject": "Cources",
+  "cli": {
+    "analytics": false
+  }
 }

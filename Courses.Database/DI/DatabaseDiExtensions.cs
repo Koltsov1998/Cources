@@ -1,0 +1,24 @@
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Courses.Database.DI;
+
+public static class DatabaseDiExtensions
+{
+    public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+    {
+        return services.AddDbContext<CoursesDbContext>(options =>
+        {
+            options.UseNpgsql(configuration.GetConnectionString("CoursesDbContext"));
+        });
+    }
+
+    public static void Migrate(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<CoursesDbContext>();
+        dbContext.Database.Migrate();
+    }
+}
