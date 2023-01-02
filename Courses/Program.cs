@@ -1,8 +1,6 @@
 using Courses.Application.Features.RefreshCourses;
-using Courses.Database;
 using Courses.Database.DI;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddMediatR(typeof(RefreshCoursesQuery));
 builder.Services.AddDatabase(builder.Configuration);
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -30,6 +29,9 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.Migrate();
 
