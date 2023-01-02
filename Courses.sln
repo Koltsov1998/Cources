@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.Application", "Cour
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.Database", "Courses.Database\Courses.Database.csproj", "{AAD32E4E-74CB-457D-84A2-9CEEB072F805}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.Infrastructure", "Courses.Infrastructure\Courses.Infrastructure.csproj", "{A45AFF95-02EB-4F45-9EF0-C2CCB641F824}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.Core", "Courses.Core\Courses.Core.csproj", "{F7F4237D-E794-42AB-8358-BA47970A8A7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{AAD32E4E-74CB-457D-84A2-9CEEB072F805}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAD32E4E-74CB-457D-84A2-9CEEB072F805}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAD32E4E-74CB-457D-84A2-9CEEB072F805}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A45AFF95-02EB-4F45-9EF0-C2CCB641F824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A45AFF95-02EB-4F45-9EF0-C2CCB641F824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A45AFF95-02EB-4F45-9EF0-C2CCB641F824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A45AFF95-02EB-4F45-9EF0-C2CCB641F824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7F4237D-E794-42AB-8358-BA47970A8A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7F4237D-E794-42AB-8358-BA47970A8A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7F4237D-E794-42AB-8358-BA47970A8A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7F4237D-E794-42AB-8358-BA47970A8A7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

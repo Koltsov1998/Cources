@@ -22,18 +22,18 @@ namespace Courses.Database.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Courses.Database.Models.Course", b =>
+            modelBuilder.Entity("Courses.Database.Models.CourseDbo", b =>
                 {
                     b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
 
-                    b.Property<string>("CountryTextCode")
+                    b.Property<string>("CurrencyName")
                         .HasColumnType("text");
 
                     b.Property<decimal>("Value")
                         .HasColumnType("numeric");
 
-                    b.HasKey("Date", "CountryTextCode");
+                    b.HasKey("Date", "CurrencyName");
 
                     b.ToTable("Courses");
                 });

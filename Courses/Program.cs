@@ -1,14 +1,16 @@
 using Courses.Application.Features.RefreshCourses;
 using Courses.Database.DI;
+using Courses.Infrastructure.DI;
 using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 builder.Services.AddMediatR(typeof(RefreshCoursesQuery));
 builder.Services.AddDatabase(builder.Configuration);
+builder.Services.AddInfrastructure();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

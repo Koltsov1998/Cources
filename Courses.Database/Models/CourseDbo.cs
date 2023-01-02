@@ -1,6 +1,6 @@
 ﻿namespace Courses.Database.Models;
 
-public record Course(
+public record CourseDbo(
     DateTime Date,
-    string CountryTextCode,
+    string CurrencyName,
     decimal Value);

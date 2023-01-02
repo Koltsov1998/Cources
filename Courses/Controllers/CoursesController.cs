@@ -1,11 +1,12 @@
-﻿using Courses.Application.Features.RefreshCourses;
+﻿using System.ComponentModel;
+using Courses.Application.Features.RefreshCourses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cources.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("courses")]
 public class CoursesController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -16,10 +17,19 @@ public class CoursesController : ControllerBase
     }
 
     [HttpPut("refresh")]
-    public async Task RefreshCourses(CancellationToken cancellationToken)
+    public async Task<IActionResult> RefreshCourses(
+        [FromBody][DefaultValue(2015)] int year,
+        CancellationToken cancellationToken)
     {
-        var command = new RefreshCoursesQuery();
+        if (year < 2000 || year > DateTime.Now.Year)
+        {
+            return BadRequest($"Year must be between 2000 and {DateTime.Now.Year}");
+        }
+        
+        var command = new RefreshCoursesQuery(year);
 
         await _mediator.Send(command, cancellationToken);
+
+        return Ok();
     }
 }

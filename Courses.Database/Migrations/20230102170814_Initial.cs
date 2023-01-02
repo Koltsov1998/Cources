@@ -15,13 +15,13 @@ namespace Courses.Database.Migrations
                 name: "Courses",
                 columns: table => new
                 {
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CountryTextCode = table.Column<string>(type: "text", nullable: false),
+                    Date = table.Column<DateTime>(type: "date", nullable: false),
+                    CurrencyName = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Courses", x => new { x.Date, x.CountryTextCode });
+                    table.PrimaryKey("PK_Courses", x => new { x.Date, x.CurrencyName });
                 });
         }
 

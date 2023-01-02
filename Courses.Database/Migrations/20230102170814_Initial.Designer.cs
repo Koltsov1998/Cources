@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Courses.Database.Migrations
 {
     [DbContext(typeof(CoursesDbContext))]
-    [Migration("20230102140127_Initial")]
+    [Migration("20230102170814_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,18 +25,18 @@ namespace Courses.Database.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Courses.Database.Models.Course", b =>
+            modelBuilder.Entity("Courses.Database.Models.CourseDbo", b =>
                 {
                     b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
 
-                    b.Property<string>("CountryTextCode")
+                    b.Property<string>("CurrencyName")
                         .HasColumnType("text");
 
                     b.Property<decimal>("Value")
                         .HasColumnType("numeric");
 
-                    b.HasKey("Date", "CountryTextCode");
+                    b.HasKey("Date", "CurrencyName");
 
                     b.ToTable("Courses");
                 });

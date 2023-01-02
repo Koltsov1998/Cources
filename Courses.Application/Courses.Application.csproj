@@ -7,8 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="EFCore.BulkExtensions" Version="6.6.4" />
       <PackageReference Include="MediatR" Version="11.1.0" />
       <PackageReference Include="MediatR.Contracts" Version="1.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Courses.Core\Courses.Core.csproj" />
+      <ProjectReference Include="..\Courses.Database\Courses.Database.csproj" />
     </ItemGroup>
 
 </Project>

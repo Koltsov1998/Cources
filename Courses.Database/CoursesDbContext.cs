@@ -7,17 +7,17 @@ public class CoursesDbContext : DbContext
 {
     public CoursesDbContext(DbContextOptions<CoursesDbContext> options) : base(options){}
 
-    public DbSet<Course> Courses { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
-    }
+    public DbSet<CourseDbo> Courses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
-            .Entity<Course>()
-            .HasKey(entity => new { entity.Date, entity.CountryTextCode });
+        var courseEntity = modelBuilder
+            .Entity<CourseDbo>();
+        
+        courseEntity
+            .HasKey(entity => new { entity.Date, CountryTextCode = entity.CurrencyName });
+        courseEntity
+            .Property(entity => entity.Date)
+            .HasColumnType("date");
     }
 }
