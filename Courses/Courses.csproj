@@ -8,7 +8,7 @@
         <SpaProxyServerUrl>https://localhost:44450</SpaProxyServerUrl>
         <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>Cources</RootNamespace>
+        <RootNamespace>Courses</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

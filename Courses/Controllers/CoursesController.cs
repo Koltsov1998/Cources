@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel;
+using Courses.Application.Features.GetCourses;
 using Courses.Application.Features.RefreshCourses;
+using Courses.Controllers.Mappings;
+using Courses.Controllers.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cources.Controllers;
+namespace Courses.Controllers;
 
 [ApiController]
 [Route("courses")]
@@ -15,7 +18,28 @@ public class CoursesController : ControllerBase
     {
         _mediator = mediator;
     }
+    
+    [HttpGet]
+    public async Task<GetCoursesResponse> GetCourses(
+        DateTime? dateFromUtc,
+        DateTime? dateToUtc,
+        string currency,
+        int pageNumber = 0,
+        int pageSize = 25,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new GetCoursesQuery(
+            dateFromUtc,
+            dateToUtc,
+            currency,
+            pageNumber,
+            pageSize);
 
+        var result = await _mediator.Send(command, cancellationToken);
+
+        return result.MapToResponse();
+    }
+    
     [HttpPut("refresh")]
     public async Task<IActionResult> RefreshCourses(
         [FromBody][DefaultValue(2015)] int year,

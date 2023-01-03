@@ -19,5 +19,9 @@ public class CoursesDbContext : DbContext
         courseEntity
             .Property(entity => entity.Date)
             .HasColumnType("date");
+        courseEntity
+            .HasIndex(entity => entity.Date);
+        courseEntity
+            .HasIndex(entity => entity.CurrencyName);
     }
 }
