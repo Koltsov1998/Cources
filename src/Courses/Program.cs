@@ -1,4 +1,5 @@
 using Courses.Application.Features.RefreshCourses;
+using Courses.Data;
 using Courses.Database.DI;
 using Courses.Infrastructure.DI;
 using MediatR;
@@ -39,5 +40,6 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.Services.Migrate();
+app.Services.SeedData().GetAwaiter().GetResult();
 
 app.Run();

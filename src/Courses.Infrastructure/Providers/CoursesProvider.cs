@@ -14,7 +14,7 @@ public class CoursesProvider : ICoursesProvider
     {
         _client = client;
     }
-    
+
     public async Task<ImmutableArray<Course>> GetCourses(int year, CancellationToken cancellationToken)
     {
         var response = await _client.Client.GetAsync(
@@ -37,7 +37,7 @@ public class CoursesProvider : ICoursesProvider
             .Skip(1)
             .Select(currency =>
                 (
-                    currencyName: currency.Split(" ")[1], 
+                    currencyName: currency.Split(" ")[1],
                     mupltiplier: decimal.Parse(currency.Split(" ")[0], CultureInfo.InvariantCulture)))
             .ToArray();
 
@@ -47,19 +47,19 @@ public class CoursesProvider : ICoursesProvider
             {
                 yield break;
             }
-            
+
             var courseValues = courseString.Split("|");
 
-            var date = DateTime.Parse(courseValues[0]);
-            
+            var date = DateTime.ParseExact(courseValues[0], "dd.MM.yyyy", CultureInfo.InvariantCulture);
+
             for (int i = 1; i < courseValues.Length; i++)
             {
                 var courseValue = decimal.Parse(courseValues[i], CultureInfo.InvariantCulture);
                 var currency = currencies[i - 1];
 
                 yield return new Course(
-                    date, 
-                    currency.currencyName, 
+                    date,
+                    currency.currencyName,
                     currency.mupltiplier * courseValue);
             }
         }
