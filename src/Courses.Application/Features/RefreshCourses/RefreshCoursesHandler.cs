@@ -1,8 +1,9 @@
 ﻿using Courses.Core.Providers;
 using Courses.Database;
 using Courses.Database.Models;
-using EFCore.BulkExtensions;
+using Dapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Courses.Application.Features.RefreshCourses;
 
@@ -30,9 +31,25 @@ public class RefreshCoursesHandler : IRequestHandler<RefreshCoursesQuery>
                 course.Value))
             .ToList();
         
-        await _dbContext.BulkInsertOrUpdateAsync(
-            courseDbos, 
-            cancellationToken: cancellationToken);
+        await using var connection = _dbContext.Database.GetDbConnection();
+
+        await connection.ExecuteAsync(@"
+            INSERT INTO public.""Courses"" (
+                ""Date"",
+                ""CurrencyName"",
+                ""Value"")
+            VALUES (
+                @Date,
+                @CurrencyName,
+                @Value)
+            ON CONFLICT (
+                ""Date"", 
+                ""CurrencyName"") 
+            DO UPDATE SET 
+                ""Date"" = @Date,
+                ""CurrencyName"" = @CurrencyName,
+                ""Value"" = @Value", 
+            courseDbos);
         
         return Unit.Value;
     }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,12 +12,5 @@ public static class DatabaseDiExtensions
         {
             options.UseNpgsql(configuration.GetConnectionString("CoursesDbContext"));
         });
-    }
-
-    public static void Migrate(this WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<CoursesDbContext>();
-        dbContext.Database.Migrate();
     }
 }
