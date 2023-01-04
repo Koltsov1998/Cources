@@ -32,11 +32,11 @@ public class GetCoursesHandler : IRequestHandler<GetCoursesQuery, ImmutableArray
         courses = courses.Where(course => course.CurrencyName == request.CurrencyName);
 
         var coursesDbo = await courses
+            .OrderBy(course => course.Date)
             .Skip(request.PageNumber * request.PageSize)
             .Take(request.PageSize)
-            .OrderBy(course => course.Date)
             .ToArrayAsync(cancellationToken);
-        
+
         return coursesDbo
             .Select(courseDbo => new Course(
                 courseDbo.Date,
