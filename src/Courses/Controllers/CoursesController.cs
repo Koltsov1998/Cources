@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Immutable;
+using System.ComponentModel;
+using Courses.Application.Features.GetCountryNames;
 using Courses.Application.Features.GetCourses;
 using Courses.Application.Features.RefreshCourses;
 using Courses.Controllers.Mappings;
@@ -18,7 +20,7 @@ public class CoursesController : ControllerBase
     {
         _mediator = mediator;
     }
-    
+
     [HttpGet]
     public async Task<GetCoursesResponse> GetCourses(
         DateTime? dateFromUtc,
@@ -39,7 +41,18 @@ public class CoursesController : ControllerBase
 
         return result.MapToResponse();
     }
-    
+
+    [HttpGet("countries/names")]
+    public async Task<ImmutableArray<string>> GetCountryNames(
+      CancellationToken cancellationToken)
+    {
+      var command = new GetCountryNamesQuery();
+
+      var result = await _mediator.Send(command, cancellationToken);
+
+      return result;
+    }
+
     [HttpPut("refresh")]
     public async Task<IActionResult> RefreshCourses(
         [FromBody][DefaultValue(2015)] int year,
@@ -49,7 +62,7 @@ public class CoursesController : ControllerBase
         {
             return BadRequest($"Year must be between 2000 and {DateTime.Now.Year}");
         }
-        
+
         var command = new RefreshCoursesQuery(year);
 
         await _mediator.Send(command, cancellationToken);
