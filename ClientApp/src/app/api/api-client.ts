@@ -11,7 +11,7 @@
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
-import { Http, Headers, ResponseContentType, Response } from '@angular/http';
+import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
 export module API {
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
@@ -20,11 +20,11 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
     providedIn: 'root'
 })
 export class Client {
-    private http: Http;
+    private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
@@ -62,16 +62,17 @@ export class Client {
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
-            method: "get",
-            headers: new Headers({
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
                 "Accept": "text/plain"
             })
         };
 
-        return this.http.request(url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processCourses(response_);
         })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof Response) {
+            if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processCourses(response_ as any);
                 } catch (e) {
@@ -82,20 +83,24 @@ export class Client {
         }));
     }
 
-    protected processCourses(response: Response): Observable<GetCoursesResponse> {
+    protected processCourses(response: HttpResponseBase): Observable<GetCoursesResponse> {
         const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
 
-        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
-            const _responseText = response.text();
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = GetCoursesResponse.fromJS(resultData200);
             return _observableOf(result200);
-
+            }));
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.text();
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
         }
         return _observableOf(null as any);
     }
@@ -104,20 +109,21 @@ export class Client {
      * @return Success
      */
     names(): Observable<string[]> {
-        let url_ = this.baseUrl + "/courses/countries/names";
+        let url_ = this.baseUrl + "/courses/currencies/names";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
-            method: "get",
-            headers: new Headers({
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
                 "Accept": "text/plain"
             })
         };
 
-        return this.http.request(url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processNames(response_);
         })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof Response) {
+            if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processNames(response_ as any);
                 } catch (e) {
@@ -128,12 +134,15 @@ export class Client {
         }));
     }
 
-    protected processNames(response: Response): Observable<string[]> {
+    protected processNames(response: HttpResponseBase): Observable<string[]> {
         const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
 
-        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
-            const _responseText = response.text();
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             if (Array.isArray(resultData200)) {
@@ -145,10 +154,11 @@ export class Client {
                 result200 = <any>null;
             }
             return _observableOf(result200);
-
+            }));
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.text();
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
         }
         return _observableOf(null as any);
     }
@@ -165,16 +175,17 @@ export class Client {
 
         let options_ : any = {
             body: content_,
-            method: "put",
-            headers: new Headers({
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
                 "Content-Type": "application/json",
             })
         };
 
-        return this.http.request(url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processRefresh(response_);
         })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof Response) {
+            if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processRefresh(response_ as any);
                 } catch (e) {
@@ -185,17 +196,21 @@ export class Client {
         }));
     }
 
-    protected processRefresh(response: Response): Observable<void> {
+    protected processRefresh(response: HttpResponseBase): Observable<void> {
         const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
 
-        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
-            const _responseText = response.text();
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
-
+            }));
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.text();
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
         }
         return _observableOf(null as any);
     }

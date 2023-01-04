@@ -3,9 +3,9 @@ using Courses.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Courses.Application.Features.GetCountryNames;
+namespace Courses.Application.Features.GetCurrencyNames;
 
-public class GetCountryNamesHandler : IRequestHandler<GetCountryNamesQuery, ImmutableArray<string>>
+public class GetCountryNamesHandler : IRequestHandler<GetCurrencyNamesQuery, ImmutableArray<string>>
 {
   private readonly CoursesDbContext _coursesDbContext;
 
@@ -15,7 +15,7 @@ public class GetCountryNamesHandler : IRequestHandler<GetCountryNamesQuery, Immu
   }
 
   public async Task<ImmutableArray<string>> Handle(
-    GetCountryNamesQuery request,
+    GetCurrencyNamesQuery request,
     CancellationToken cancellationToken)
   {
     return (await _coursesDbContext.Courses

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.ComponentModel;
-using Courses.Application.Features.GetCountryNames;
 using Courses.Application.Features.GetCourses;
+using Courses.Application.Features.GetCurrencyNames;
 using Courses.Application.Features.RefreshCourses;
 using Courses.Controllers.Mappings;
 using Courses.Controllers.Models;
@@ -42,11 +42,11 @@ public class CoursesController : ControllerBase
         return result.MapToResponse();
     }
 
-    [HttpGet("countries/names")]
-    public async Task<ImmutableArray<string>> GetCountryNames(
+    [HttpGet("currencies/names")]
+    public async Task<ImmutableArray<string>> GetCurrencyNames(
       CancellationToken cancellationToken)
     {
-      var command = new GetCountryNamesQuery();
+      var command = new GetCurrencyNamesQuery();
 
       var result = await _mediator.Send(command, cancellationToken);
 
