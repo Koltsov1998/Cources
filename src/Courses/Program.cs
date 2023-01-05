@@ -14,26 +14,21 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseHsts();
-}
+if (!app.Environment.IsDevelopment()) app.UseHsts();
 
 if (app.Environment.IsDevelopment())
-{
   app.UseCors(options => options
     .AllowAnyOrigin()
     .AllowAnyHeader()
     .AllowAnyMethod());
-}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+  "default",
+  "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
 app.UseSwagger();

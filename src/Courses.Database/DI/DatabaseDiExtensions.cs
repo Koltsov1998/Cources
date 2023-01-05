@@ -6,11 +6,11 @@ namespace Courses.Database.DI;
 
 public static class DatabaseDiExtensions
 {
-    public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+  public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+  {
+    return services.AddDbContext<CoursesDbContext>(options =>
     {
-        return services.AddDbContext<CoursesDbContext>(options =>
-        {
-            options.UseNpgsql(configuration.GetConnectionString("CoursesDbContext"));
-        });
-    }
+      options.UseNpgsql(configuration.GetConnectionString("CoursesDbContext"));
+    });
+  }
 }

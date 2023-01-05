@@ -106,6 +106,62 @@ export class Client {
     }
 
     /**
+     * @param date (optional) 
+     * @return Success
+     */
+    exactDate(date: Date | undefined): Observable<GetCourseResponse> {
+        let url_ = this.baseUrl + "/courses/exact-date?";
+        if (date === null)
+            throw new Error("The parameter 'date' cannot be null.");
+        else if (date !== undefined)
+            url_ += "date=" + encodeURIComponent(date ? "" + date.toISOString() : "") + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExactDate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExactDate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetCourseResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetCourseResponse>;
+        }));
+    }
+
+    protected processExactDate(response: HttpResponseBase): Observable<GetCourseResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetCourseResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return Success
      */
     names(): Observable<string[]> {
@@ -254,6 +310,46 @@ export class CourseDto implements ICourseDto {
 export interface ICourseDto {
     date?: Date;
     value?: number;
+}
+
+export class GetCourseResponse implements IGetCourseResponse {
+    exactDate?: Date | undefined;
+    value?: number | undefined;
+
+    constructor(data?: IGetCourseResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.exactDate = _data["exactDate"] ? new Date(_data["exactDate"].toString()) : <any>undefined;
+            this.value = _data["value"];
+        }
+    }
+
+    static fromJS(data: any): GetCourseResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetCourseResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["exactDate"] = this.exactDate ? this.exactDate.toISOString() : <any>undefined;
+        data["value"] = this.value;
+        return data;
+    }
+}
+
+export interface IGetCourseResponse {
+    exactDate?: Date | undefined;
+    value?: number | undefined;
 }
 
 export class GetCoursesResponse implements IGetCoursesResponse {

@@ -1,21 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Dapper" Version="2.0.123" />
-      <PackageReference Include="EFCore.BulkExtensions" Version="6.6.4" />
-      <PackageReference Include="MediatR" Version="11.1.0" />
-      <PackageReference Include="MediatR.Contracts" Version="1.0.1" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123"/>
+    <PackageReference Include="EFCore.BulkExtensions" Version="6.6.4"/>
+    <PackageReference Include="MediatR" Version="11.1.0"/>
+    <PackageReference Include="MediatR.Contracts" Version="1.0.1"/>
+  </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Courses.Core\Courses.Core.csproj" />
-      <ProjectReference Include="..\Courses.Database\Courses.Database.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Courses.Core\Courses.Core.csproj"/>
+    <ProjectReference Include="..\Courses.Database\Courses.Database.csproj"/>
+  </ItemGroup>
 
 </Project>

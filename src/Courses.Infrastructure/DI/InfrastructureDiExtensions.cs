@@ -7,20 +7,20 @@ namespace Courses.Infrastructure.DI;
 
 public static class InfrastructureDiExtensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
-    {
-        return services
-            .RegisterClients()
-            .AddScoped<ICoursesProvider, CoursesProvider>();
-    }
+  public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+  {
+    return services
+      .RegisterClients()
+      .AddScoped<ICoursesProvider, CoursesProvider>();
+  }
 
-    public static IServiceCollection RegisterClients(this IServiceCollection services)
-    {
-        services
-            .AddHttpClient<CoursesHttpClient>()
-            .ConfigureHttpClient(
-                options => options.BaseAddress = new Uri("https://www.cnb.cz"));
+  public static IServiceCollection RegisterClients(this IServiceCollection services)
+  {
+    services
+      .AddHttpClient<CoursesHttpClient>()
+      .ConfigureHttpClient(
+        options => options.BaseAddress = new Uri("https://www.cnb.cz"));
 
-        return services;
-    }
+    return services;
+  }
 }

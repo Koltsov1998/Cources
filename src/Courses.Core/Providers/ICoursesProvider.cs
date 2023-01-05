@@ -4,5 +4,5 @@ namespace Courses.Core.Providers;
 
 public interface ICoursesProvider
 {
-    Task<ImmutableArray<Course>> GetCourses(int year, CancellationToken cancellationToken);
+  Task<ImmutableArray<Course>> GetCourses(int year, CancellationToken cancellationToken);
 }

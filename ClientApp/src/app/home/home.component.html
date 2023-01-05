@@ -1,13 +1,16 @@
 <p-panel>
   <ng-template pTemplate="header">
     <div class="flex align-content-start">
-
     </div>
     <p-dropdown [options]="currencies" placeholder="Select a Currency" [(ngModel)]="selectedCurrency"
       (ngModelChange)="refreshData()">
     </p-dropdown>
     <p-calendar class="pl-2" [(ngModel)]="dateFrom" placeholder="Specify date"
-      (ngModelChange)="refreshData()"></p-calendar>
+      (ngModelChange)="refreshData()">
+    </p-calendar>
+    <div class="pl-2" *ngIf="courseValue">
+      Exact date: {{courseValue.exactDate?.toLocaleDateString()}} | Exact value {{courseValue.value}}
+    </div>
   </ng-template>
   <p-chart height="60vh" *ngIf="courses" type="line" [data]="chartData" [options]="chartOptions"></p-chart>
 </p-panel>

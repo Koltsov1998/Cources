@@ -9,6 +9,7 @@ export class HomeComponent {
   courses: API.CourseDto[] | undefined;
   currencies: string[] = [];
   selectedCurrency: string | undefined;
+  courseValue: API.GetCourseResponse | undefined;
   chartOptions = {
     plugins: {
       legend: {
@@ -59,6 +60,9 @@ export class HomeComponent {
 
       if (this.dateFrom) {
         dateFromUtc = convertLocalDateToUTCIgnoringTimezone(this.dateFrom)
+        this.apiClient
+          .exactDate(dateFromUtc)
+          .subscribe(response => this.courseValue = response)
       }
 
       this.apiClient

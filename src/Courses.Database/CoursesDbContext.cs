@@ -5,23 +5,25 @@ namespace Courses.Database;
 
 public class CoursesDbContext : DbContext
 {
-    public CoursesDbContext(DbContextOptions<CoursesDbContext> options) : base(options){}
+  public CoursesDbContext(DbContextOptions<CoursesDbContext> options) : base(options)
+  {
+  }
 
-    public DbSet<CourseDbo> Courses { get; set; }
+  public DbSet<CourseDbo> Courses { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        var courseEntity = modelBuilder
-            .Entity<CourseDbo>();
-        
-        courseEntity
-            .HasKey(entity => new { entity.Date, CountryTextCode = entity.CurrencyName });
-        courseEntity
-            .Property(entity => entity.Date)
-            .HasColumnType("date");
-        courseEntity
-            .HasIndex(entity => entity.Date);
-        courseEntity
-            .HasIndex(entity => entity.CurrencyName);
-    }
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    var courseEntity = modelBuilder
+      .Entity<CourseDbo>();
+
+    courseEntity
+      .HasKey(entity => new { entity.Date, CountryTextCode = entity.CurrencyName });
+    courseEntity
+      .Property(entity => entity.Date)
+      .HasColumnType("date");
+    courseEntity
+      .HasIndex(entity => entity.Date);
+    courseEntity
+      .HasIndex(entity => entity.CurrencyName);
+  }
 }
