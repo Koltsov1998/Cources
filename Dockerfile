@@ -7,6 +7,11 @@ COPY /ClientApp .
 RUN npm run build
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS backend
+
+EXPOSE 5000
+
+ENV ASPNETCORE_URLS=http://+:5000
+
 WORKDIR /app
 
 COPY /src ./Courses/
