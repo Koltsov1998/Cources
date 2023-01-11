@@ -2,4 +2,4 @@
 
 namespace Courses.Application.Features.GetCourse;
 
-public record GetCourseQuery(DateTime DateUtc) : IRequest<GetCourseResult?>;
+public record GetCourseQuery(string CurrencyName, DateTime DateUtc) : IRequest<GetCourseResult?>;

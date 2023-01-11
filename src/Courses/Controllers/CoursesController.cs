@@ -45,10 +45,11 @@ public class CoursesController : ControllerBase
 
   [HttpGet("exact-date")]
   public async Task<GetCourseResponse> GetCourse(
+    string currencyName,
     DateTime date,
     CancellationToken cancellationToken)
   {
-    var command = new GetCourseQuery(date);
+    var command = new GetCourseQuery(currencyName, date);
 
     var result = await _mediator.Send(command, cancellationToken);
 

@@ -1,6 +1,8 @@
-﻿using Courses.Core.Providers;
+﻿using Courses.Application.Repositories;
+using Courses.Core.Providers;
 using Courses.Infrastructure.Clients;
 using Courses.Infrastructure.Providers;
+using Courses.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Courses.Infrastructure.DI;
@@ -11,7 +13,8 @@ public static class InfrastructureDiExtensions
   {
     return services
       .RegisterClients()
-      .AddScoped<ICoursesProvider, CoursesProvider>();
+      .AddScoped<ICoursesProvider, CoursesProvider>()
+      .AddScoped<ICourseRepository, CourseRepository>();
   }
 
   public static IServiceCollection RegisterClients(this IServiceCollection services)

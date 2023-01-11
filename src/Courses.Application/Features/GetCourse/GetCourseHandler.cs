@@ -1,25 +1,21 @@
-﻿using Courses.Database;
+﻿using Courses.Application.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Courses.Application.Features.GetCourse;
 
 public class GetCourseHandler : IRequestHandler<GetCourseQuery, GetCourseResult?>
 {
-  private readonly CoursesDbContext _coursesDbContext;
+  private readonly ICourseRepository _courseRepository;
 
-  public GetCourseHandler(CoursesDbContext coursesDbContext)
+  public GetCourseHandler(ICourseRepository courseRepository)
   {
-    _coursesDbContext = coursesDbContext;
+    _courseRepository = courseRepository;
   }
 
   public async Task<GetCourseResult?> Handle(GetCourseQuery request, CancellationToken cancellationToken)
   {
-    var courseDbo = await _coursesDbContext.Courses
-      .OrderByDescending(course => course.Date)
-      .Where(course => course.Date <= request.DateUtc)
-      .FirstOrDefaultAsync(cancellationToken);
+    var course = await _courseRepository.Get(request.CurrencyName, request.DateUtc, cancellationToken);
 
-    return courseDbo != null ? new GetCourseResult(courseDbo.Date, courseDbo.Value) : null;
+    return course != null ? new GetCourseResult(course.Date, course.Value) : null;
   }
 }
