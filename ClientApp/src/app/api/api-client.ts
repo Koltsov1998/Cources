@@ -106,11 +106,16 @@ export class Client {
     }
 
     /**
+     * @param currencyName (optional) 
      * @param date (optional) 
      * @return Success
      */
-    exactDate(date: Date | undefined): Observable<GetCourseResponse> {
+    exactDate(currencyName: string | undefined, date: Date | undefined): Observable<GetCourseResponse> {
         let url_ = this.baseUrl + "/courses/exact-date?";
+        if (currencyName === null)
+            throw new Error("The parameter 'currencyName' cannot be null.");
+        else if (currencyName !== undefined)
+            url_ += "currencyName=" + encodeURIComponent("" + currencyName) + "&";
         if (date === null)
             throw new Error("The parameter 'date' cannot be null.");
         else if (date !== undefined)

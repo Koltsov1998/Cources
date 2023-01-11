@@ -9,7 +9,7 @@
       (ngModelChange)="refreshData()">
     </p-calendar>
     <div class="pl-2" *ngIf="courseValue">
-      Exact date: {{courseValue.exactDate?.toLocaleDateString()}} | Exact value {{courseValue.value}}
+      Exact date: {{courseValue.exactDate?.toLocaleDateString()}} | Exact value: {{courseValue.value}}
     </div>
   </ng-template>
   <p-chart height="60vh" *ngIf="courses" type="line" [data]="chartData" [options]="chartOptions"></p-chart>

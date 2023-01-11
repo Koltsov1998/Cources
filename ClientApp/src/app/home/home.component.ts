@@ -61,7 +61,7 @@ export class HomeComponent {
       if (this.dateFrom) {
         dateFromUtc = convertLocalDateToUTCIgnoringTimezone(this.dateFrom)
         this.apiClient
-          .exactDate(dateFromUtc)
+          .exactDate(this.selectedCurrency, dateFromUtc)
           .subscribe(response => this.courseValue = response)
       }
 
